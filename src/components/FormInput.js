@@ -8,7 +8,6 @@ const FormInput = ({ handleInputChange, handleAdd, value, error }) => {
         className={error ? "error" : null}
         type="text"
         onChange={handleInputChange}
-        value={value}
         placeholder="Enter Item"
       />
       <Button

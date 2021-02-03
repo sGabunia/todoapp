@@ -9,9 +9,10 @@ function App() {
 
   const addTodo = (e) => {
     e.preventDefault();
+    console.dir(e.target);
     if (todo.todo) {
       setTodos([...todos, todo]);
-      setTodo({ todo: "", id: 0 });
+      e.target[0].value = "";
       setError(false);
     } else {
       setError(true);
@@ -30,7 +31,9 @@ function App() {
   return (
     <div className="app">
       <div className="todos">
-        <h2>You have {todos.length} Todos</h2>
+        <h2>
+          You have {todos.length} {todos.length > 1 ? "Todos" : "Todo"}{" "}
+        </h2>
         {todos.map((todo) => (
           <Todo
             key={todo.id}
@@ -41,7 +44,6 @@ function App() {
         <FormInput
           handleInputChange={handleChange}
           handleAdd={addTodo}
-          value={todo.todo}
           error={error}
         />
       </div>
