@@ -9,6 +9,7 @@ const FormInput = ({ handleInputChange, handleAdd, value, error }) => {
         type="text"
         onChange={handleInputChange}
         placeholder="Enter Item"
+        value={value}
       />
       <Button
         type="submit"

@@ -9,10 +9,10 @@ function App() {
 
   const addTodo = (e) => {
     e.preventDefault();
-    console.dir(e.target);
-    if (todo.todo) {
+
+    if (todo.todo !== "") {
       setTodos([...todos, todo]);
-      e.target[0].value = "";
+      setTodo({ ...todo, todo: "" });
       setError(false);
     } else {
       setError(true);
@@ -26,6 +26,9 @@ function App() {
 
   const handleChange = (e) => {
     setTodo({ todo: e.target.value, id: Date.now() });
+    if (error) {
+      setError(false);
+    }
   };
 
   return (
@@ -45,6 +48,7 @@ function App() {
           handleInputChange={handleChange}
           handleAdd={addTodo}
           error={error}
+          value={todo.todo}
         />
       </div>
     </div>
