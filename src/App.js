@@ -1,58 +1,119 @@
-import React, { useState } from "react";
+import React from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { gql } from "@apollo/client";
+import Header from "./components/Header";
 import FormInput from "./components/FormInput";
-import Todo from "./components/Todo";
+import TodoList from "./components/TodoList";
 
-function App() {
-  const [todo, setTodo] = useState({ todo: "", id: 0 });
-  const [todos, setTodos] = useState([]);
-  const [error, setError] = useState(false);
+const GET_TODOS = gql`
+  query getTodos {
+    todos {
+      done
+      id
+      text
+    }
+  }
+`;
 
-  const addTodo = (e) => {
+const TOGGLE_TODOS = gql`
+  mutation toggleTodo($id: uuid!, $done: Boolean!) {
+    update_todos(where: { id: { _eq: $id } }, _set: { done: $done }) {
+      returning {
+        done
+        id
+        text
+      }
+    }
+  }
+`;
+
+const ADD_TODO = gql`
+  mutation addTodo($text: String!) {
+    insert_todos(objects: { text: $text }) {
+      returning {
+        done
+        id
+        text
+      }
+    }
+  }
+`;
+
+const DELETE_TODO = gql`
+  mutation deleteTodo($id: uuid!) {
+    delete_todos(where: { id: { _eq: $id } }) {
+      returning {
+        done
+        id
+        text
+      }
+    }
+  }
+`;
+
+const App = () => {
+  const [todoText, setTodoText] = React.useState("");
+  const { data, loading, error } = useQuery(GET_TODOS);
+  const [toggleTodo] = useMutation(TOGGLE_TODOS);
+  const [deleteTodo] = useMutation(DELETE_TODO);
+  const [addTodo] = useMutation(ADD_TODO, {
+    onCompleted: () => setTodoText(""),
+  });
+
+  async function handleToggleTodo(id, done) {
+    const data = await toggleTodo({
+      variables: {
+        id,
+        done: !done,
+      },
+    });
+  }
+
+  async function handleAddTodo(e) {
     e.preventDefault();
+    if (!todoText.trim()) return;
+    const data = await addTodo({
+      variables: { text: todoText },
+      refetchQueries: [{ query: GET_TODOS }],
+    });
+  }
 
-    if (todo.todo !== "") {
-      setTodos([...todos, todo]);
-      setTodo({ ...todo, todo: "" });
-      setError(false);
-    } else {
-      setError(true);
+  async function handleDeleteTodo(id) {
+    const isConfirmed = window.confirm("Would you like to delete this todo?");
+    if (isConfirmed) {
+      const data = await deleteTodo({
+        variables: { id },
+        update: (cache) => {
+          const prevData = cache.readQuery({ query: GET_TODOS });
+          const newData = prevData.todos.filter((todo) => todo.id !== id);
+          cache.writeQuery({ query: GET_TODOS, data: { todos: newData } });
+        },
+      });
     }
-  };
+  }
 
-  const removeTodo = (id) => {
-    const newToDos = todos.filter((todo) => todo.id !== id);
-    setTodos(newToDos);
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  const handleChange = (e) => {
-    setTodo({ todo: e.target.value, id: Date.now() });
-    if (error) {
-      setError(false);
-    }
-  };
-
+  if (error) {
+    return <div>Fetching error</div>;
+  }
   return (
     <div className="app">
-      <div className="todos">
-        <h2>
-          You have {todos.length} {todos.length > 1 ? "Todos" : "Todo"}{" "}
-        </h2>
-        {todos.map((todo) => (
-          <Todo
-            key={todo.id}
-            todo={todo.todo}
-            handleRemove={() => removeTodo(todo.id)}
-          />
-        ))}
-        <FormInput
-          handleInputChange={handleChange}
-          handleAdd={addTodo}
-          error={error}
-          value={todo.todo}
-        />
-      </div>
+      <Header />
+      <FormInput
+        handleAddTodo={handleAddTodo}
+        setTodoText={setTodoText}
+        todoText={todoText}
+      />
+      <TodoList
+        todos={data.todos}
+        handleToggleTodo={handleToggleTodo}
+        handleDeleteTodo={handleDeleteTodo}
+      />
     </div>
   );
-}
+};
 
 export default App;

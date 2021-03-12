@@ -1,28 +1,18 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
 
-const FormInput = ({ handleInputChange, handleAdd, value, error }) => {
+const FormInput = ({ handleAddTodo, setTodoText, todoText }) => {
   return (
-    <form onSubmit={handleAdd}>
+    <form onSubmit={handleAddTodo}>
       <input
-        className={error ? "error" : null}
         type="text"
-        onChange={handleInputChange}
-        placeholder="Enter Item"
-        value={value}
+        placeholder="Create your todo"
+        maxLength="25"
+        onChange={(e) => setTodoText(e.target.value)}
+        value={todoText}
       />
-      <Button
-        type="submit"
-        variant="contained"
-        style={{
-          background: "white",
-          border: "1px solid gray",
-          marginLeft: "0.8rem",
-          fontWeight: "bold",
-        }}
-      >
-        Submit
-      </Button>
+      <button type="submit" className="btn-create">
+        Create
+      </button>
     </form>
   );
 };

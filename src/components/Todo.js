@@ -1,11 +1,22 @@
 import React from "react";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
-const Todo = ({ todo, handleRemove }) => {
+const Todo = ({ text, id, done, handleToggleTodo, handleDeleteTodo }) => {
   return (
-    <div className="todo">
-      <p>{todo}</p>
-      <HighlightOffIcon onClick={handleRemove}></HighlightOffIcon>
+    <div className="todos">
+      <span className="todo" style={{ textDecoration: done && "line-through" }}>
+        {text}
+      </span>
+      <p>
+        <ion-icon
+          onClick={() => handleToggleTodo(id, done)}
+          name="checkmark-outline"
+          style={{ color: "green" }}
+        ></ion-icon>
+        <ion-icon
+          name="close-outline"
+          onClick={() => handleDeleteTodo(id)}
+        ></ion-icon>
+      </p>
     </div>
   );
 };
