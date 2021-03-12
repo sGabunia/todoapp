@@ -10,66 +10,74 @@
 }
 
 body {
-  font-family: "Roboto", sans-serif;
-  text-align: center;
+  background-color: purple;
+  color: #fff;
+  font-family: "Source Code Pro", monospace;
+  /* text-align: center; */
   line-height: 1.6;
 }
 
-/* fonts */
-h2 {
-  margin: 0.5rem 0;
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
 }
 
-/* layout */
 .app {
   min-height: 100vh;
+  min-width: 300px;
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem;
+}
+
+form {
+  margin-bottom: 3rem;
+  width: 60%;
   display: flex;
   justify-content: center;
-  align-items: center;
-
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0.144) 100%
-  );
-}
-
-.todos {
-  border: 1px solid grey;
-  padding: 0.5rem 2rem 2rem 2rem;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-}
-
-/* form and input */
-form {
-  min-width: 500px;
-  display: flex;
-  justify-content: space-between;
-  margin-top: 0.7rem;
 }
 
 input {
-  flex: 1;
-  font-size: 1rem;
-  font-family: inherit;
-  padding: 0.7rem;
-  border: 1px solid grey;
-  border-radius: 0.2rem;
+  padding: 0.5rem;
+  border: 2px dashed;
+  font-size: 1.3rem;
   outline: none;
+  flex-grow: 1;
+  flex-shrink: 0;
 }
 
-/* todo item */
-.todo {
+.create {
+  background-color: transparent;
+  display: inline-block;
+  padding: 0 1rem;
+  font-size: 1.3rem;
+  outline: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+.todos {
+  width: 80%;
+  min-width: 300px;
   display: flex;
+  border: 1px solid grey;
+  border-radius: 5px;
   justify-content: space-between;
-  padding: 0.5rem 0;
-  border-top: 1px solid gray;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
 }
 
-.todo svg {
+.todo {
+  font-size: 1.5rem;
   cursor: pointer;
 }
 
-.error {
-  border: 2px solid red;
+ion-icon {
+  cursor: pointer;
+  color: red;
 }

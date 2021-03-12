@@ -1,58 +1,37 @@
-import React, { useState } from "react";
+import React from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { gql } from "@apollo/client";
+import Header from "./components/Header";
 import FormInput from "./components/FormInput";
-import Todo from "./components/Todo";
+import TodoList from "./components/TodoList";
 
-function App() {
-  const [todo, setTodo] = useState({ todo: "", id: 0 });
-  const [todos, setTodos] = useState([]);
-  const [error, setError] = useState(false);
-
-  const addTodo = (e) => {
-    e.preventDefault();
-
-    if (todo.todo !== "") {
-      setTodos([...todos, todo]);
-      setTodo({ ...todo, todo: "" });
-      setError(false);
-    } else {
-      setError(true);
+const GET_TODOS = gql`
+  query getTodos {
+    todos {
+      done
+      id
+      text
     }
-  };
+  }
+`;
 
-  const removeTodo = (id) => {
-    const newToDos = todos.filter((todo) => todo.id !== id);
-    setTodos(newToDos);
-  };
+const App = () => {
+  const { data, loading, error } = useQuery(GET_TODOS);
 
-  const handleChange = (e) => {
-    setTodo({ todo: e.target.value, id: Date.now() });
-    if (error) {
-      setError(false);
-    }
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
+  if (error) {
+    return <div>Fetching error</div>;
+  }
   return (
     <div className="app">
-      <div className="todos">
-        <h2>
-          You have {todos.length} {todos.length > 1 ? "Todos" : "Todo"}{" "}
-        </h2>
-        {todos.map((todo) => (
-          <Todo
-            key={todo.id}
-            todo={todo.todo}
-            handleRemove={() => removeTodo(todo.id)}
-          />
-        ))}
-        <FormInput
-          handleInputChange={handleChange}
-          handleAdd={addTodo}
-          error={error}
-          value={todo.todo}
-        />
-      </div>
+      <Header />
+      <FormInput />
+      <TodoList todos={data.todos} />
     </div>
   );
-}
+};
 
 export default App;
