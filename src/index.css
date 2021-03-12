@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap");
-
 /* reset */
 *,
 *::before,
@@ -9,75 +7,94 @@
   padding: 0;
 }
 
+/* general styles */
 body {
-  background-color: purple;
+  background-color: #bc4b51;
   color: #fff;
   font-family: "Source Code Pro", monospace;
-  /* text-align: center; */
   line-height: 1.6;
 }
 
-h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
+/* general styles */
+button {
+  display: inline-block;
 }
-
+/* fonts */
+h1 {
+  font-size: 1.3rem;
+  text-align: center;
+}
+/* container */
 .app {
   min-height: 100vh;
-  min-width: 300px;
-  width: 50%;
+  max-width: 500px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 3rem;
+  text-align: center;
+  padding: 1rem;
 }
 
+/* form and input */
 form {
-  margin-bottom: 3rem;
-  width: 60%;
+  margin: 2rem 0;
   display: flex;
   justify-content: center;
 }
 
 input {
-  padding: 0.5rem;
+  width: 90%;
+  padding: 0.3rem;
   border: 2px dashed;
   font-size: 1.3rem;
   outline: none;
-  flex-grow: 1;
-  flex-shrink: 0;
 }
 
-.create {
-  background-color: transparent;
+.btn-create {
+  background-color: #5b8e7d;
+  color: inherit;
+  border-radius: 3px;
   display: inline-block;
-  padding: 0 1rem;
+  padding: 0 0.5rem;
   font-size: 1.3rem;
   outline: none;
   cursor: pointer;
-  color: inherit;
 }
 
 .todos {
-  width: 80%;
-  min-width: 300px;
   display: flex;
-  border: 1px solid grey;
-  border-radius: 5px;
-  justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+  border: 1px solid #8cb369;
+  border-radius: 3px;
+  padding: 0.3rem;
 }
 
 .todo {
-  font-size: 1.5rem;
+  font-size: 1rem;
   cursor: pointer;
 }
 
+/* icons */
 ion-icon {
   cursor: pointer;
-  color: red;
+  font-size: 24px;
+  color: rgb(124, 6, 6);
+}
+
+@media (min-width: 400px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  input {
+    padding: 0.6rem;
+  }
+
+  .todo {
+    font-size: 1.2rem;
+  }
+
+  ion-icon {
+    font-size: 32px;
+  }
 }

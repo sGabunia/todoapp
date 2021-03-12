@@ -1,16 +1,21 @@
 import React from "react";
 
-const Todo = ({ text, id, done }) => {
+const Todo = ({ text, id, done, handleToggleTodo, handleDeleteTodo }) => {
   return (
     <div className="todos">
-      <span className="todo">{text}</span>
+      <span className="todo" style={{ textDecoration: done && "line-through" }}>
+        {text}
+      </span>
       <p>
         <ion-icon
+          onClick={() => handleToggleTodo(id, done)}
           name="checkmark-outline"
-          size="large"
           style={{ color: "green" }}
         ></ion-icon>
-        <ion-icon name="close-outline" size="large"></ion-icon>
+        <ion-icon
+          name="close-outline"
+          onClick={() => handleDeleteTodo(id)}
+        ></ion-icon>
       </p>
     </div>
   );
